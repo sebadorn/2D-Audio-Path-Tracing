@@ -5,11 +5,43 @@
 	<meta charset="utf-8" />
 	<title>2D Audio Path Tracing</title>
 	<link rel="stylesheet" href="css/screen.css" />
+	<script src="js/easeljs-0.8.1.min.js"></script>
+	<script src="js/tweenjs-0.15.0.min.js"></script>
 	<script src="js/wad.min.js"></script>
+
+	<script src="js/CFG.js"></script>
+
+	<script src="js/Point.js"></script>
+	<script src="js/Receiver.js"></script>
+	<script src="js/Sender.js"></script>
+
+	<script src="js/Scene.js"></script>
+	<script src="js/UI.js"></script>
+	<script>
+		window.addEventListener( 'load', function(ev) {
+			UI.init();
+
+			// Main loop.
+			createjs.Ticker.framerate = 10;
+			createjs.Ticker.addEventListener( 'tick', function( ev ) {
+				if( ev.paused ) {
+					return;
+				}
+
+				Scene.simulate( ev );
+			} );
+
+			// Test.
+			var r = new Receiver( { x: 100, y: 100 } );
+			var s0 = new Sender( { x: 400, y: 200 } );
+			Scene.setReceiver( r );
+			Scene.addSender( s0 );
+		} );
+	</script>
 </head>
 <body>
 
-
+<canvas id="stage"></canvas>
 
 </body>
 </html>
