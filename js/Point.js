@@ -19,6 +19,7 @@ Point.prototype = {
 
 
 	_graphic: null,
+	_graphicAnim: null,
 	color: '#000000',
 	radius: 0,
 	x: 0,

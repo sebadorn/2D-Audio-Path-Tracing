@@ -46,6 +46,17 @@ Sender.prototype._initSound = function() {
 
 
 /**
+ * Play an animation visualizing the sound.
+ */
+Sender.prototype.playAnimation = function() {
+	this._graphicAnim.alpha = 1;
+	var tween = createjs.Tween.get( this._graphicAnim );
+	tween.to( { scaleX: 5, scaleY: 5, alpha: 0 }, CFG.SOUND.TIME_DELTA - 250 );
+	tween.to( { scaleX: 1, scaleY: 1 } );
+};
+
+
+/**
  * Play the sound.
  */
 Sender.prototype.playSound = function() {

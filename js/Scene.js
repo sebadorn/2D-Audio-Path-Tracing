@@ -24,6 +24,7 @@ var Scene = {
 	 */
 	playAllSounds: function() {
 		for( var i = 0; i < this._sender.length; i++ ) {
+			this._sender[i].playAnimation();
 			this._sender[i].playSound();
 		}
 	},

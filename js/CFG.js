@@ -3,6 +3,6 @@
 
 var CFG = {
 	SOUND: {
-		TIME_DELTA: 5000 // [ms]
+		TIME_DELTA: 4000 // [ms]
 	}
 };

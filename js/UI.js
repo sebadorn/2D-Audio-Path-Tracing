@@ -26,10 +26,21 @@ var UI = {
 	 */
 	addSender: function( s ) {
 		var shape = new createjs.Shape();
-		shape.graphics.beginFill( s.color ).drawCircle( s.x, s.y, s.radius );
+		shape.graphics.beginFill( s.color ).drawCircle( 0, 0, s.radius );
+		shape.x = s.x;
+		shape.y = s.y;
 
-		this._stage.addChild( shape );
+		var shapeAnim = new createjs.Shape();
+		shapeAnim.graphics.setStrokeStyle( 1 );
+		shapeAnim.graphics.beginStroke( s.color );
+		shapeAnim.graphics.drawCircle( 0, 0, s.radius );
+		shapeAnim.alpha = 0;
+		shapeAnim.x = s.x;
+		shapeAnim.y = s.y;
+
+		this._stage.addChild( shape, shapeAnim );
 		s._graphic = shape;
+		s._graphicAnim = shapeAnim;
 
 		return shape;
 	},
