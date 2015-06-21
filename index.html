@@ -15,11 +15,34 @@
 	<script src="js/Receiver.js"></script>
 	<script src="js/Sender.js"></script>
 
+	<script src="js/Physics.js"></script>
 	<script src="js/Scene.js"></script>
 	<script src="js/UI.js"></script>
 	<script>
 		window.addEventListener( 'load', function(ev) {
 			UI.init();
+
+			// Scene description.
+			var r = new Receiver( {
+				x: 100,
+				y: 100
+			} );
+			var s0 = new Sender( {
+				x: 400,
+				y: 200,
+				hearableDistance: 400,
+				pitch: 'Eb5'
+			} );
+			var s1 = new Sender( {
+				x: 100,
+				y: 300,
+				hearableDistance: 300,
+				pitch: 'D3'
+			} );
+
+			Scene.setReceiver( r );
+			Scene.addSender( s0 );
+			Scene.addSender( s1 );
 
 			// Main loop.
 			createjs.Ticker.framerate = 10;
@@ -30,12 +53,6 @@
 
 				Scene.simulate( ev );
 			} );
-
-			// Test.
-			var r = new Receiver( { x: 100, y: 100 } );
-			var s0 = new Sender( { x: 400, y: 200 } );
-			Scene.setReceiver( r );
-			Scene.addSender( s0 );
 		} );
 	</script>
 </head>

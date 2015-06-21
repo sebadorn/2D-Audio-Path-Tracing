@@ -24,8 +24,25 @@ var Scene = {
 	 */
 	playAllSounds: function() {
 		for( var i = 0; i < this._sender.length; i++ ) {
-			this._sender[i].playAnimation();
-			this._sender[i].playSound();
+			var s = this._sender[i];
+			var vol = Physics.volume( this._receiver, s );
+
+			s.playAnimation();
+			s.playSound( {
+				volume: vol
+			} );
+		}
+	},
+
+
+	/**
+	 * Position the receiver where the mouse clicked.
+	 * @param {MouseEvent} ev
+	 */
+	positionReceiver: function( ev ) {
+		if( this._receiver ) {
+			console.debug( 'Receiver pos:', ev.clientX, ev.clientY );
+			this._receiver.setPos( ev.clientX, ev.clientY );
 		}
 	},
 

@@ -36,6 +36,27 @@ Point.prototype = {
 		var diffY = this.y - q.y;
 
 		return Math.sqrt( diffX * diffX + diffY * diffY );
+	},
+
+
+	/**
+	 * Set a new position.
+	 * @param {Number} x
+	 * @param {Number} y
+	 */
+	setPos: function( x, y ) {
+		this.x = x;
+		this.y = y;
+
+		if( this._graphic ) {
+			this._graphic.x = x;
+			this._graphic.y = y;
+		}
+
+		if( this._graphicAnim ) {
+			this._graphicAnim.x = x;
+			this._graphicAnim.y = y;
+		}
 	}
 
 

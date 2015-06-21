@@ -20,6 +20,16 @@ var UI = {
 
 
 	/**
+	 * Initialize events.
+	 */
+	_initEvents: function() {
+		this._canvas.addEventListener( 'click', function( ev ) {
+			Scene.positionReceiver( ev );
+		} );
+	},
+
+
+	/**
 	 * Add a sender point.
 	 * @param  {Sender}         s
 	 * @return {createjs.Shape}   The created point.
@@ -32,7 +42,7 @@ var UI = {
 
 		var shapeAnim = new createjs.Shape();
 		shapeAnim.graphics.setStrokeStyle( 1 );
-		shapeAnim.graphics.beginStroke( s.color );
+		shapeAnim.graphics.beginFill( s.color );
 		shapeAnim.graphics.drawCircle( 0, 0, s.radius );
 		shapeAnim.alpha = 0;
 		shapeAnim.x = s.x;
@@ -73,6 +83,7 @@ var UI = {
 	init: function() {
 		this._initCanvas();
 		this._stage = new createjs.Stage( 'stage' );
+		this._initEvents();
 	},
 
 
@@ -83,7 +94,9 @@ var UI = {
 	 */
 	setReceiver: function( r ) {
 		var shape = new createjs.Shape();
-		shape.graphics.beginFill( r.color ).drawCircle( r.x, r.y, r.radius );
+		shape.graphics.beginFill( r.color ).drawCircle( 0, 0, r.radius );
+		shape.x = r.x;
+		shape.y = r.y;
 
 		this._stage.addChild( shape );
 		r._graphic = shape;

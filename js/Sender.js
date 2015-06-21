@@ -10,6 +10,9 @@ var Sender = function( data ) {
 	data.color = data.color || '#F19049';
 	Point.call( this, data );
 
+	this.hearableDistance = data.hearableDistance || 100;
+	this.pitch = data.pitch || 'A4';
+
 	this.sound = null;
 	this._initSound();
 };
@@ -39,8 +42,7 @@ Sender.prototype._initSound = function() {
 				frequency: 600
 			}
 		},
-		source: 'square',
-		volume: 0.5
+		source: 'square'
 	} );
 };
 
@@ -49,18 +51,40 @@ Sender.prototype._initSound = function() {
  * Play an animation visualizing the sound.
  */
 Sender.prototype.playAnimation = function() {
-	this._graphicAnim.alpha = 1;
+	// Make visible.
+	this._graphicAnim.alpha = 0.3;
+
 	var tween = createjs.Tween.get( this._graphicAnim );
-	tween.to( { scaleX: 5, scaleY: 5, alpha: 0 }, CFG.SOUND.TIME_DELTA - 250 );
-	tween.to( { scaleX: 1, scaleY: 1 } );
+	var duration = CFG.SOUND.TIME_DELTA - 250;
+	var scale = this.hearableDistance / this.radius;
+
+	// Grow bigger while fading out.
+	// Looks like an extending circle/wave.
+	tween.to( {
+		alpha: 0,
+		scaleX: scale,
+		scaleY: scale
+	}, duration );
+
+	// Reset.
+	tween.to( {
+		scaleX: 1,
+		scaleY: 1
+	} );
 };
 
 
 /**
  * Play the sound.
  */
-Sender.prototype.playSound = function() {
-	this.sound.play( { pitch: 'Eb5', filter: { q: 15 } } );
+Sender.prototype.playSound = function( options ) {
+	if( options.volume > 0 ) {
+		this.sound.play( {
+			pitch: this.pitch,
+			filter: { q: 15 },
+			volume: options.volume
+		} );
+	}
 };
 
 
