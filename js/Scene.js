@@ -20,18 +20,33 @@ var Scene = {
 
 
 	/**
-	 * Play all sounds of the senders.
+	 * Adjust all sounds of the senders.
 	 */
-	playAllSounds: function() {
+	adjustSounds: function() {
 		for( var i = 0; i < this._sender.length; i++ ) {
 			var s = this._sender[i];
 			var vol = Physics.volume( this._receiver, s );
 
 			s.playAnimation();
-			s.playSound( {
+			s.setSound( {
 				volume: vol
 			} );
 		}
+	},
+
+
+	/**
+	 * Start the main loop.
+	 */
+	mainLoop: function() {
+		createjs.Ticker.framerate = CFG.SIMULATION.TICKS;
+		createjs.Ticker.addEventListener( 'tick', function( ev ) {
+			if( ev.paused ) {
+				return;
+			}
+
+			Scene.simulate( ev );
+		} );
 	},
 
 
@@ -41,7 +56,9 @@ var Scene = {
 	 */
 	positionReceiver: function( ev ) {
 		if( this._receiver ) {
-			console.debug( 'Receiver pos:', ev.clientX, ev.clientY );
+			console.debug( '[Scene.positionReceiver]' +
+				' Receiver pos:', ev.clientX, ev.clientY );
+
 			this._receiver.setPos( ev.clientX, ev.clientY );
 		}
 	},
@@ -65,7 +82,7 @@ var Scene = {
 		UI.draw( ev );
 
 		if( ev.timeStamp - this._lastSound >= CFG.SOUND.TIME_DELTA ) {
-			this.playAllSounds();
+			this.adjustSounds();
 			this._lastSound = Date.now();
 		}
 	}

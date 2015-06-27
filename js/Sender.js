@@ -6,15 +6,14 @@
  * @constructor
  * @param {Object} data
  */
-var Sender = function( data ) {
+var Sender = function( data, cb ) {
 	data.color = data.color || '#F19049';
 	Point.call( this, data );
 
 	this.hearableDistance = data.hearableDistance || 100;
-	this.pitch = data.pitch || 'A4';
 
 	this.sound = null;
-	this._initSound();
+	this._initSound( data, cb );
 };
 
 
@@ -24,26 +23,11 @@ Sender.prototype = Object.create( Point.prototype );
 /**
  * Initalize the sound object.
  */
-Sender.prototype._initSound = function() {
-	this.sound = new Wad( {
-		env: {
-			attack: 0.01,
-			decay: 0.005,
-			sustain: 0.2,
-			hold: 0.015,
-			release: 0.3
-		},
-		filter: {
-			type: 'lowpass',
-			frequency: 1200,
-			q: 8.5,
-			env: {
-				attack: 0.2,
-				frequency: 600
-			}
-		},
-		source: 'square'
-	} );
+Sender.prototype._initSound = function( data, cb ) {
+	this.sound = new Sound( data.source, data, function() {
+		this.sound.play();
+		cb && cb( this );
+	}.bind ( this ) );
 };
 
 
@@ -77,13 +61,9 @@ Sender.prototype.playAnimation = function() {
 /**
  * Play the sound.
  */
-Sender.prototype.playSound = function( options ) {
-	if( options.volume > 0 ) {
-		this.sound.play( {
-			pitch: this.pitch,
-			filter: { q: 15 },
-			volume: options.volume
-		} );
+Sender.prototype.setSound = function( options ) {
+	if( options.volume >= 0 ) {
+		this.sound.setVolume( options.volume );
 	}
 };
 

@@ -5,9 +5,13 @@
 	<meta charset="utf-8" />
 	<title>2D Audio Path Tracing</title>
 	<link rel="stylesheet" href="css/screen.css" />
-	<script src="js/easeljs-NEXT.min.js"></script>
-	<script src="js/tweenjs-NEXT.min.js"></script>
-	<script src="js/wad.min.js"></script>
+	<script src="sounds/fire-loop-base64.js"></script>
+	<script src="sounds/waterfall-loop-base64.js"></script>
+
+	<script src="js/lib/easeljs-NEXT.min.js"></script>
+	<script src="js/lib/tweenjs-NEXT.min.js"></script>
+	<script src="js/lib/base64-binary.js"></script>
+	<!-- <script src="js/lib/wad.min.js"></script> -->
 
 	<script src="js/CFG.js"></script>
 
@@ -17,42 +21,47 @@
 
 	<script src="js/Physics.js"></script>
 	<script src="js/Scene.js"></script>
+	<script src="js/Sound.js"></script>
 	<script src="js/UI.js"></script>
 	<script>
 		window.addEventListener( 'load', function(ev) {
 			UI.init();
 
-			// Scene description.
+			// Senders.
+			var senders = [
+				{
+					x: 600,
+					y: 200,
+					hearableDistance: 350,
+					source: SOUND_WATERFALL_LOOP,
+					volumeMaster: 0.7
+				},
+				{
+					x: 200,
+					y: 400,
+					hearableDistance: 300,
+					source: SOUND_FIRE_LOOP
+				}
+			];
+
+			var cbReady = function( sender ) {
+				Scene.addSender( sender );
+			};
+
+			for( var i = 0; i < senders.length; i++ ) {
+				var s = new Sender( senders[i], cbReady );
+			}
+
+			// Receiver.
 			var r = new Receiver( {
 				x: 100,
 				y: 100
 			} );
-			var s0 = new Sender( {
-				x: 400,
-				y: 200,
-				hearableDistance: 400,
-				pitch: 'Eb5'
-			} );
-			var s1 = new Sender( {
-				x: 100,
-				y: 300,
-				hearableDistance: 300,
-				pitch: 'D3'
-			} );
 
 			Scene.setReceiver( r );
-			Scene.addSender( s0 );
-			Scene.addSender( s1 );
 
-			// Main loop.
-			createjs.Ticker.framerate = 10;
-			createjs.Ticker.addEventListener( 'tick', function( ev ) {
-				if( ev.paused ) {
-					return;
-				}
-
-				Scene.simulate( ev );
-			} );
+			// Start.
+			Scene.mainLoop();
 		} );
 	</script>
 </head>
