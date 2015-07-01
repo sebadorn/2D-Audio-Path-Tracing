@@ -26,6 +26,11 @@ var UI = {
 		this._canvas.addEventListener( 'click', function( ev ) {
 			Scene.positionReceiver( ev );
 		} );
+
+		this._canvas.addEventListener( 'contextmenu', function( ev ) {
+			Scene.setReceiverOrientation( ev );
+			ev.preventDefault();
+		} );
 	},
 
 

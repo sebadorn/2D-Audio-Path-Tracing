@@ -28,6 +28,10 @@ var Scene = {
 			var vol = Physics.volume( this._receiver, s );
 
 			s.playAnimation();
+			s.setOrientation(
+				this._receiver.x - s.x,
+				this._receiver.y - s.y
+			);
 			s.setSound( {
 				volume: vol
 			} );
@@ -71,6 +75,20 @@ var Scene = {
 	setReceiver: function( r ) {
 		this._receiver = r;
 		UI.setReceiver( r );
+	},
+
+
+	/**
+	 * Set the orientation of the receiver.
+	 * @param {MouseEvent} ev
+	 */
+	setReceiverOrientation: function( ev ) {
+		var r = new Ray( {}, {
+			x: ev.clientX - this._receiver.x,
+			y: ev.clientY - this._receiver.y
+		} );
+
+		this._receiver.setOrientation( r.direction.x, r.direction.y );
 	},
 
 

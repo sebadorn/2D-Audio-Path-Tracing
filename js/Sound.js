@@ -75,15 +75,30 @@ Sound.prototype._loadSound = function( source, cb ) {
  */
 Sound.prototype.play = function() {
 	this._gainNode = this._context.createGain();
+	this._pannerNode = this._context.createPanner();
+
+	var listener = this._context.listener;
+	listener.setOrientation( 1, 0, 0, 0, 0, -1 );
 
 	var source = this._context.createBufferSource();
 	source.buffer = this._audioBuffer;
 	source.loop = true;
 	source.connect( this._gainNode );
-	this._gainNode.connect( this._context.destination );
+	this._gainNode.connect( this._pannerNode );
+	this._pannerNode.connect( this._context.destination );
 
 	this.setVolume( 0 );
 	source.start( 0 );
+};
+
+
+/**
+ * Set the listener orientation.
+ * @param {Number} x
+ * @param {Number} y
+ */
+Sound.prototype.setOrientation = function( x, y ) {
+	this._context.listener.setOrientation( x, y, 0, 0, 0, -1 );
 };
 
 

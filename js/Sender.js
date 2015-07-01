@@ -12,6 +12,10 @@ var Sender = function( data, cb ) {
 
 	this.hearableDistance = data.hearableDistance || 100;
 
+	this.orientation = {
+		x: 1,
+		y: 0
+	};
 	this.sound = null;
 	this._initSound( data, cb );
 };
@@ -59,7 +63,19 @@ Sender.prototype.playAnimation = function() {
 
 
 /**
+ * Set orientation.
+ * @param {Number} x
+ * @param {Number} y
+ */
+Sender.prototype.setOrientation = function( x, y ) {
+	this.orientation.x = x;
+	this.orientation.y = y;
+};
+
+
+/**
  * Play the sound.
+ * @param {Object} options
  */
 Sender.prototype.setSound = function( options ) {
 	if( options.volume >= 0 ) {
