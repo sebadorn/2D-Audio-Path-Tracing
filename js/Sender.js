@@ -29,7 +29,7 @@ Sender.prototype = Object.create( Point.prototype );
  */
 Sender.prototype._initSound = function( data, cb ) {
 	this.sound = new Sound( data.source, data, function() {
-		this.sound.play();
+		this.sound.play( this );
 		cb && cb( this );
 	}.bind ( this ) );
 };
@@ -59,6 +59,26 @@ Sender.prototype.playAnimation = function() {
 		scaleX: 1,
 		scaleY: 1
 	} );
+};
+
+
+/**
+ * Update various sound nodes that depend on the position
+ * of the receiver.
+ * @param {Receiver} r
+ */
+Sender.prototype.updateListener = function( r ) {
+	this.sound._context.listener.setPosition( r.x, r.y, 0 );
+	this.sound._context.listener.setOrientation(
+		-r.orientation.x, -r.orientation.y, 0, // center
+		0, 0, -1 // up
+	);
+
+	this.sound._pannerNode.setOrientation(
+		r.x - this.x,
+		r.y - this.y,
+		0
+	);
 };
 
 

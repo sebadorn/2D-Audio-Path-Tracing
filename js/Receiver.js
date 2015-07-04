@@ -11,8 +11,8 @@ var Receiver = function( data ) {
 	Point.call( this, data );
 
 	this.orientation = {
-		x: 1,
-		y: 0
+		x: 0,
+		y: 1
 	};
 };
 

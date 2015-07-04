@@ -28,10 +28,7 @@ var Scene = {
 			var vol = Physics.volume( this._receiver, s );
 
 			s.playAnimation();
-			s.setOrientation(
-				this._receiver.x - s.x,
-				this._receiver.y - s.y
-			);
+			s.updateListener( this._receiver );
 			s.setSound( {
 				volume: vol
 			} );
