@@ -100,11 +100,14 @@ var UI = {
 	setReceiver: function( r ) {
 		var shape = new createjs.Shape();
 		shape.graphics.beginFill( r.color ).drawCircle( 0, 0, r.radius );
-		shape.x = r.x;
-		shape.y = r.y;
 
 		this._stage.addChild( shape );
 		r._graphic = shape;
+
+		r._graphicDir = new createjs.Shape();
+		this._stage.addChild( r._graphicDir );
+
+		r.setPos( r.x, r.y );
 
 		return shape;
 	}
